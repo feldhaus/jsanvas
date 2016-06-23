@@ -217,9 +217,9 @@ DisplayObject.prototype = new Vector2();
 *******************************************************************************/
 
 function Rect(x, y, width, height) {
+    DisplayObject.call(this, x, y);
     this.width = width;
     this.height = height;
-    DisplayObject.call(this, x, y);
 }
 Rect.prototype = new DisplayObject();
 
@@ -252,8 +252,8 @@ Rect.prototype.render = function() {
 *******************************************************************************/
 
 function Circle(x, y, radius) {
-    this.radius = radius;
     DisplayObject.call(this, x, y);
+    this.radius = radius;
 }
 Circle.prototype = new DisplayObject();
 
@@ -280,11 +280,12 @@ Circle.prototype.render = function() {
 *******************************************************************************/
 
 function Line() {
-    this.lineWidth = 1
+    DisplayObject.call(this);
+    this.lineWidth = 1;
+    this.fillStyle = null;
     this.points = [];
     for (var i = 0; i < arguments.length; i+=2)
         this.points.push(new Vector2(arguments[i], arguments[i+1]));
-    DisplayObject.call(this);
 }
 Line.prototype = new DisplayObject();
 
@@ -319,13 +320,13 @@ Line.prototype.append = function() {
 *******************************************************************************/
 
 function Img(filename, x, y, width, height) {
+    Vector2.call(this, x, y);
     this.width = width;
     this.height = height;
     parent = this;
     this.img = new Image();
     this.img.src = filename;
     this.img.onload = function() { parent.render(); }
-    Vector2.call(this, x, y);
 }
 Img.prototype = new Vector2();
 
