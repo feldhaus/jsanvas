@@ -48,12 +48,32 @@ var c = jsanvas.newCircle(x, y, radius);
 ```
 
 #### Other options (default)
-```
+```javascript
 c.visible = true;
 c.fillStyle = 'white'
 c.lineWidth = 1
 c.strokeStyle = 'black'
 c.rotation = 0;
+```
+
+### Line
+
+#### New line
+```javascript
+var l = jsanvas.newLine(x1,y1, x2,y2, ...);
+```
+
+#### Append new points
+```javascript
+l.append(x1,y1, x2,y2, ...)
+```
+
+#### Other options (default)
+```javascript
+l.visible = true;
+l.fillStyle = null
+l.lineWidth = 1
+l.strokeStyle = 'black'
 ```
 
 ### Image
@@ -64,7 +84,7 @@ var i = jsanvas.newImage(url, x, y, width, height);
 ```
 
 #### Other options (default)
-```
+```javascript
 i.visible = true;
 i.rotation = 0;
 ```

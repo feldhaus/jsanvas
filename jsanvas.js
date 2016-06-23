@@ -64,21 +64,28 @@ jsanvas.remove = function(obj) {
 }
 
 jsanvas.newRect = function(x, y, width, height) {
-    var obj = new Rect(x, y, width, height);
-    this.objects.push(obj);
-    return obj;
+    var r = new Rect(x, y, width, height);
+    this.objects.push(r);
+    return r;
 }
 
 jsanvas.newCircle = function(x, y, radius) {
-    var obj = new Circle(x, y, radius);
-    this.objects.push(obj);
-    return obj;
+    var c = new Circle(x, y, radius);
+    this.objects.push(c);
+    return c;
+}
+
+jsanvas.newLine = function() {
+    var l = Object.create(Line.prototype);
+    Line.apply(l, arguments);
+    this.objects.push(l);
+    return l;
 }
 
 jsanvas.newImage = function(filename, x, y, width, height) {
-    var obj = new Img(filename, x, y, width, height);
-    this.objects.push(obj);
-    return obj;
+    var i = new Img(filename, x, y, width, height);
+    this.objects.push(i);
+    return i;
 }
 
 /*******************************************************************************
@@ -201,7 +208,7 @@ function DisplayObject(x, y) {
     this.lineWidth = 1
     this.strokeStyle = 'black'
     this.rotation = 0;
-    Vector2.call(this, x, y);
+    Vector2.call(this, x || 0, y || 0);
 }
 DisplayObject.prototype = new Vector2();
 
@@ -236,7 +243,6 @@ Rect.prototype.render = function() {
         jsanvas.context.strokeStyle = this.strokeStyle;
         jsanvas.context.stroke();
     }
-    
     // restore the co-ordinate
     jsanvas.context.restore()
 }
@@ -257,14 +263,55 @@ Circle.prototype.render = function() {
     // draw circle
     jsanvas.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
     // set fill style and fill it
-    jsanvas.context.fillStyle = this.fillStyle;
-    jsanvas.context.fill();
+    if (this.fillStyle) {
+        jsanvas.context.fillStyle = this.fillStyle;
+        jsanvas.context.fill();
+    }
     // set stroke width and style and draw it
     if (this.lineWidth > 0) {
         jsanvas.context.lineWidth = this.lineWidth;
         jsanvas.context.strokeStyle = this.strokeStyle;
         jsanvas.context.stroke();
     }
+}
+
+/*******************************************************************************
+    LINE
+*******************************************************************************/
+
+function Line() {
+    this.lineWidth = 1
+    this.points = [];
+    for (var i = 0; i < arguments.length; i+=2)
+        this.points.push(new Vector2(arguments[i], arguments[i+1]));
+    DisplayObject.call(this);
+}
+Line.prototype = new DisplayObject();
+
+Line.prototype.render = function() {
+    // begins a path
+    jsanvas.context.beginPath();
+    // draw lines
+    if (this.points.length > 1) {
+        jsanvas.context.moveTo(this.points[0].x, this.points[0].y);
+        for (var i = 1; i < this.points.length; i++) {
+            jsanvas.context.lineTo(this.points[i].x, this.points[i].y);
+        }
+    }
+    // set fill style and fill it
+    if (this.fillStyle) {
+        jsanvas.context.fillStyle = this.fillStyle;
+        jsanvas.context.fill();
+    }
+    // set stroke width and style and draw it
+    jsanvas.context.lineWidth = this.lineWidth > 0 ? this.lineWidth : 1;
+    jsanvas.context.strokeStyle = this.strokeStyle;
+    jsanvas.context.stroke();
+}
+
+Line.prototype.append = function() {
+    for (var i = 0; i < arguments.length; i+=2)
+        this.points.push(new Vector2(arguments[i], arguments[i+1]));
 }
 
 /*******************************************************************************
@@ -278,9 +325,9 @@ function Img(filename, x, y, width, height) {
     this.img = new Image();
     this.img.src = filename;
     this.img.onload = function() { parent.render(); }
-    DisplayObject.call(this, x, y);
+    Vector2.call(this, x, y);
 }
-Img.prototype = new DisplayObject();
+Img.prototype = new Vector2();
 
 Img.prototype.render = function() {
     // save the current co-ordinate system before screw it
