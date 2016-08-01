@@ -1,6 +1,9 @@
 A simple Javascript canvas framework to draw in HTML5 Canvas.
 
 ## API
+```html
+<script src="https://rawgit.com/feldhaus/jsanvas/master/jsanvas.min.js"></script>
+```
 
 ### JSanvas
 
@@ -24,11 +27,22 @@ jsanvas.remove(displayObject);
 var center = jsanvas.center;
 ```
 
+#### Get canvas widht
+```javascript
+var w = jsanvas.width;
+```
+
+#### Get canvas height
+```javascript
+var h = jsanvas.height;
+```
+
 ### Rectangle
+Creates a rectangle object.
 
 #### New rectangle
 ```javascript
-var r = jsanvas.newRect(x, y, width, height);
+var r = new Rect(x, y, width, height);
 ```
 
 #### Other options (default)
@@ -41,10 +55,11 @@ r.rotation = 0;
 ```
 
 ### Circle
+Creates a circle object.
 
 #### New circle
 ```javascript
-var c = jsanvas.newCircle(x, y, radius);
+var c = new Circle(x, y, radius);
 ```
 
 #### Other options (default)
@@ -57,10 +72,11 @@ c.rotation = 0;
 ```
 
 ### Line
+Draw a line from one point to another. Optionally, you may append points to the end of the line to create outline shapes or paths.
 
 #### New line
 ```javascript
-var l = jsanvas.newLine(x1,y1, x2,y2, ...);
+var l = new Line(x1,y1, x2,y2, ...);
 ```
 
 #### Append new points
@@ -77,10 +93,11 @@ l.strokeStyle = 'black'
 ```
 
 ### Image
+Displays an image on the screen from a file.
 
 #### New image
 ```javascript
-var i = jsanvas.newImage(url, x, y, width, height);
+var i = new Image(url, x, y, width, height);
 ```
 
 #### Other options (default)
@@ -118,24 +135,24 @@ i.rotation = 0;
             var center = jsanvas.center;
             
             // create a rectangle 1 (background)
-            var r1 = jsanvas.newRect(center.x, center.y, jsanvas.width, jsanvas.height);
+            var r1 = new Rect(center.x, center.y, jsanvas.width, jsanvas.height);
             r1.fillStyle = '#E84A5F';
             r1.lineWidth = 50;
             r1.strokeStyle = '#2A363B';
             
             // create a rectangle 2 (rotated)
-            var r2 = jsanvas.newRect(center.x, center.y, 300, 300);
+            var r2 = new Rect(center.x, center.y, 300, 300);
             r2.fillStyle = '#2A363B';
             r2.lineWidth = 0;
             r2.rotation = 45;
             
             // create a circle 1 - filled
-            var c1 = jsanvas.newCircle(center.x, center.y, 50);
+            var c1 = new Circle(center.x, center.y, 50);
             c1.fillStyle = '#E84A5F';
             c1.lineWidth = 0;
             
             // create a circle 2 - just stroke
-            var c2 = jsanvas.newCircle(center.x, center.y, 100);
+            var c2 = new Circle(center.x, center.y, 100);
             c2.fillStyle = 'rgba(0,0,0,0)';
             c2.lineWidth = 5;
             c2.strokeStyle = '#E84A5F';
