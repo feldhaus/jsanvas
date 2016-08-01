@@ -213,6 +213,20 @@ function ShapeObject(x, y) {
 }
 ShapeObject.prototype = Object.create(DisplayObject.prototype);
 
+ShapeObject.prototype.draw = function() {
+    // set fill style and fill it
+    if (this.fillStyle) {
+        jsanvas.context.fillStyle = this.fillStyle;
+        jsanvas.context.fill();
+    }
+    // set stroke width and style and draw it
+    if (this.lineWidth > 0) {
+        jsanvas.context.lineWidth = this.lineWidth;
+        jsanvas.context.strokeStyle = this.strokeStyle;
+        jsanvas.context.stroke();
+    }
+}
+
 /*******************************************************************************
     GROUP
 *******************************************************************************/
@@ -294,15 +308,8 @@ Rect.prototype.render = function() {
     jsanvas.context.beginPath();
     // draw rect
     jsanvas.context.rect(-this.width / 2, -this.height / 2, this.width, this.height);
-    // set fill style and fill it
-    jsanvas.context.fillStyle = this.fillStyle;
-    jsanvas.context.fill();
-    // set stroke width and style and draw it
-    if (this.lineWidth > 0) {
-        jsanvas.context.lineWidth = this.lineWidth;
-        jsanvas.context.strokeStyle = this.strokeStyle;
-        jsanvas.context.stroke();
-    }
+    // draw it
+    this.draw();
     // restore the co-ordinate
     jsanvas.context.restore()
 }
@@ -322,17 +329,8 @@ Circle.prototype.render = function() {
     jsanvas.context.beginPath();
     // draw circle
     jsanvas.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-    // set fill style and fill it
-    if (this.fillStyle) {
-        jsanvas.context.fillStyle = this.fillStyle;
-        jsanvas.context.fill();
-    }
-    // set stroke width and style and draw it
-    if (this.lineWidth > 0) {
-        jsanvas.context.lineWidth = this.lineWidth;
-        jsanvas.context.strokeStyle = this.strokeStyle;
-        jsanvas.context.stroke();
-    }
+    // draw it
+    this.draw();
 }
 
 /*******************************************************************************
@@ -360,20 +358,14 @@ Line.prototype.render = function() {
             jsanvas.context.lineTo(this.points[i].x, this.points[i].y);
         }
     }
-    // set fill style and fill it
-    if (this.fillStyle) {
-        jsanvas.context.fillStyle = this.fillStyle;
-        jsanvas.context.fill();
-    }
-    // set stroke width and style and draw it
-    jsanvas.context.lineWidth = this.lineWidth;
-    jsanvas.context.strokeStyle = this.strokeStyle;
-    jsanvas.context.stroke();
+    // draw it
+    this.draw();
 }
 
 Line.prototype.append = function() {
-    for (var i = 0; i < arguments.length; i+=2)
+    for (var i = 0; i < arguments.length; i+=2) {
         this.points.push(new Vector2(arguments[i], arguments[i+1]));
+    }
 }
 
 /*******************************************************************************
@@ -384,7 +376,6 @@ function Img(filename, x, y, width, height) {
     DisplayObject.call(this, x, y);
     this.width = width || 0;
     this.height = height || 0;
-    console.log(filename,x,y,this.width,this.height);
     parent = this;
     this.img = new Image();
     this.img.src = filename;
