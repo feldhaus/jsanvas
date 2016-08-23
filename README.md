@@ -1,6 +1,11 @@
 A simple Javascript canvas framework to draw in HTML5 Canvas.
 
 ## API
+Download file:
+```html
+<script src="jsanvas.min.js"></script>
+```
+or:
 ```html
 <script src="https://rawgit.com/feldhaus/jsanvas/master/jsanvas.min.js"></script>
 ```
