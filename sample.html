@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+    </head>
+    
+<body onload="init()">
+    <canvas id="myCanvas" width="800" height="600">
+        Your browser does not support the HTML5 canvas tag.
+    </canvas>
+
+    <script src="jsanvas.js"></script>
+    <script>
+        // get canvas and context
+        jsanvas.canvasID = 'myCanvas';
+        
+        // init
+        function init() {
+            // get canvas center position (Vector2)
+            var center = jsanvas.center;
+            
+            // create a rectangle 1 (background)
+            var r1 = new Rect(center.x, center.y, jsanvas.width, jsanvas.height);
+            r1.fillStyle = '#E84A5F';
+            r1.lineWidth = 50;
+            r1.strokeStyle = '#2A363B';
+            
+            // create a rectangle 2 (rotated)
+            var r2 = new Rect(center.x, center.y, 300, 300);
+            r2.fillStyle = '#2A363B';
+            r2.lineWidth = 0;
+            r2.rotation = 45;
+            
+            // create a circle 1 - filled
+            var c1 = new Circle(center.x, center.y, 50);
+            c1.fillStyle = '#E84A5F';
+            c1.lineWidth = 0;
+            
+            // create a circle 2 - just stroke
+            var c2 = new Circle(center.x, center.y, 100);
+            c2.fillStyle = 'rgba(0,0,0,0)';
+            c2.lineWidth = 5;
+            c2.strokeStyle = '#E84A5F';
+            
+            // render objects
+            jsanvas.render();
+        }
+    </script>
+</body>
+</html>
