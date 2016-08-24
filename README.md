@@ -17,20 +17,17 @@ jsanvas.canvasID = 'myCanvas';
 ```
 
 ### Properties
-#### center
-Returns canvas center position (Vector2).
+- center: Returns canvas center position (Vector2).
 ```javascript
 var center = jsanvas.center;
 ```
 
-#### width
-Returns canvas widht.
+- width: Returns canvas widht.
 ```javascript
 var w = jsanvas.width;
 ```
 
-#### height
-Returns canvas height.
+- height: Returns canvas height.
 ```javascript
 var h = jsanvas.height;
 ```
@@ -53,7 +50,7 @@ Creates a rectangle object.
 ```javascript
 var r = new Rect(x, y, width, height);
 ```
-Other options (default):
+Properties (default):
 ```
 r.visible = true;
 r.fillStyle = 'white'
@@ -67,7 +64,7 @@ Creates a circle object.
 ```javascript
 var c = new Circle(x, y, radius);
 ```
-Other options (default):
+Properties (default):
 ```javascript
 c.visible = true;
 c.fillStyle = 'white'
@@ -81,7 +78,7 @@ Draw a line from one point to another. Optionally, you may append points to the 
 ```javascript
 var l = new Line(x1,y1, x2,y2, ...);
 ```
-Other options (default):
+Properties (default):
 ```javascript
 l.visible = true;
 l.fillStyle = null
@@ -100,7 +97,7 @@ Displays an image on the screen from a file.
 ```javascript
 var i = new Image(url, x, y, width, height);
 ```
-Other options (default):
+Properties (default):
 ```javascript
 i.visible = true;
 i.rotation = 0;
