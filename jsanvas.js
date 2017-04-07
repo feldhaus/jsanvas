@@ -205,32 +205,6 @@ DisplayObject.prototype.toFront = function() {
 DisplayObject.prototype.render = function() {}
 
 /*******************************************************************************
-    SHAPE OBJECT
-*******************************************************************************/
-
-function ShapeObject(x, y) {
-    DisplayObject.call(this, x, y);
-    this.fillStyle = 'white';
-    this.strokeStyle = 'black';
-    this.lineWidth = 1;
-}
-ShapeObject.prototype = Object.create(DisplayObject.prototype);
-
-ShapeObject.prototype.draw = function() {
-    // set fill style and fill it
-    if (this.fillStyle) {
-        jsanvas.context.fillStyle = this.fillStyle;
-        jsanvas.context.fill();
-    }
-    // set stroke width and style and draw it
-    if (this.lineWidth > 0) {
-        jsanvas.context.lineWidth = this.lineWidth;
-        jsanvas.context.strokeStyle = this.strokeStyle;
-        jsanvas.context.stroke();
-    }
-}
-
-/*******************************************************************************
     GROUP
 *******************************************************************************/
 
@@ -255,23 +229,25 @@ Group.prototype.insert = function(displayObject) {
 
 Object.defineProperty(Group.prototype, 'x', {
     set: function(value) { 
+        var diff = this._x - value;
         this._x = value;
         // set all children x value
         for (var i = 0; i < this.children.length; i++) {
-            this.children[i].x += value;
+            this.children[i].x -= diff;
         }
     },
     get: function() {
-        return this._y;
+        return this._x;
     }
 });
 
 Object.defineProperty(Group.prototype, 'y', {
     set: function(value) { 
+        var diff = this._y - value;
         this._y = value;
         // set all children y value
         for (var i = 0; i < this.children.length; i++) {
-            this.children[i].y += value;
+            this.children[i].y -= diff;
         }
     },
     get: function(){
@@ -284,10 +260,39 @@ Object.defineProperty(Group.prototype, 'visible', {
         this._visible = value;
         // set all children visible value
         for (var i = 0; i < this.children.length; i++) {
-            this.children[i].visible += value;
+            this.children[i].visible = value;
         }
     },
+    get: function(){
+        return this._visible;
+    },
 });
+
+/*******************************************************************************
+    SHAPE OBJECT
+*******************************************************************************/
+
+function ShapeObject(x, y) {
+    Group.call(this, x, y);
+    this.fillStyle = 'white';
+    this.strokeStyle = 'black';
+    this.lineWidth = 1;
+}
+ShapeObject.prototype = Object.create(Group.prototype);
+
+ShapeObject.prototype.draw = function() {
+    // set fill style and fill it
+    if (this.fillStyle) {
+        jsanvas.context.fillStyle = this.fillStyle;
+        jsanvas.context.fill();
+    }
+    // set stroke width and style and draw it
+    if (this.lineWidth > 0) {
+        jsanvas.context.lineWidth = this.lineWidth;
+        jsanvas.context.strokeStyle = this.strokeStyle;
+        jsanvas.context.stroke();
+    }
+}
 
 /*******************************************************************************
     RECT
@@ -403,4 +408,25 @@ Img.prototype.render = function() {
     jsanvas.context.drawImage(this.img, -this.width / 2, -this.height / 2, this.width, this.height);
     // restore the co-ordinate
     jsanvas.context.restore()
+}
+
+/*******************************************************************************
+    TEXT
+*******************************************************************************/
+
+function Text(x, y, text) {
+    DisplayObject.call(this, x, y);
+    this.text = text;
+    this.font = '16px Arial';
+    this.align = 'center';
+}
+Text.prototype = Object.create(DisplayObject.prototype);
+
+Text.prototype.render = function() {
+    // set font
+    jsanvas.context.font = this.font;
+    // set align
+    jsanvas.context.textAlign = this.align;
+    // draw text
+    jsanvas.context.fillText(this.text, this.x, this.y);
 }
